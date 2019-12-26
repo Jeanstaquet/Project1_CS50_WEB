@@ -53,6 +53,22 @@ def connect():
             user=json.load(user_file)
             for i in user:
                 if request.form["username1"] in user.keys():
-                    return "ok"
+                    return render_template("search.html")
                 else:
                     return render_template("error.html")
+
+@app.route("/search", methods=["GET", "POST"], search='search')
+def search(search):
+    query = ('%' + request.args.get("search") + '%').title()
+
+    rows = db.execute(
+        "SELECT isbn, title, author, year FROM books WHERE isbn LIKE :query OR title LIKE :query OR author LIKE :query LIMIT 10",
+        {"query": query})
+
+    if rows.rowcount == 0:
+        return render_template("error.html", headline="Search Error", message="We cannot find the book "
+                                                                              "you are searching for."), 404
+
+    search = rows.fetchall()
+
+    return render_template("results.html", search=search)
