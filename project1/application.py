@@ -32,7 +32,27 @@ def loggin():
 
     if request.method == "POST":
         user= {}
+        if os.path.exists("user.json"):
+            with open("user.json") as user_file:
+                user=json.load(user_file)
+        if request.form['username'] in user.keys():
+            return "Username already taken!, take another one"
+
         user[request.form["username"]] = {'password':request.form['password']}
         with open("user.json", "w") as user_file:
             json.dump(user, user_file)
         return render_template("loggin.html")
+
+@app.route("/connect", methods=["GET", "POST"])
+def connect():
+    username=request.form.get("username1")
+    password=request.form.get("password1")
+
+    if request.method == "POST":
+        with open("user.json") as user_file:
+            user=json.load(user_file)
+            for i in user:
+                if request.form["username1"] in user.keys():
+                    return "ok"
+                else:
+                    return render_template("error.html")

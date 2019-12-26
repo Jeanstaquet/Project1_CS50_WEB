@@ -9,3 +9,14 @@
   <br>
   <button class="btn btn-primary btn-lg btn-block" type="submit">Create a account</button>
 </form>
+
+<h2>Or connect to your existed account:</h2>
+<form action="{{ url_for('connect') }}" method="post">
+  <label for="username1">Loggin</label>
+  <input type="text" class="form-control" name="username1" id="username1" value="" required>
+  <br>
+  <label for="password1">Password</label>
+  <input type="text" class="form-control" name="password1" id="password1" value="" required>
+  <br>
+  <button class="btn btn-primary btn-lg btn-block" type="submit">Connect</button>
+</form>
